@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { PRODUCTS_DATA } from '../data';
 import { Product } from '../types';
 import { IMAGE_CONFIG } from '../imageConfig';
-import { Search, Filter, Info, ShoppingBag, X, CheckCircle, HelpCircle, FileText, ChevronLeft, ArrowRight } from 'lucide-react';
+import { Search, Filter, Info, ShoppingBag, X, CheckCircle, HelpCircle, FileText, ChevronLeft, ArrowRight, Share2, Check, Linkedin } from 'lucide-react';
 import { translations } from '../translations';
 
 interface ProductsProps {
@@ -17,6 +17,14 @@ export default function Products({ categoryFilter, setCategoryFilter, lang, prod
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   
+  const [copiedSuccess, setCopiedSuccess] = useState(false);
+  
+  const handleShareClick = () => {
+    setCopiedSuccess(true);
+    navigator.clipboard?.writeText?.(window.location.href);
+    setTimeout(() => setCopiedSuccess(false), 3000);
+  };
+
   // Quotation Form states
   const [isQuotationSent, setIsQuotationSent] = useState(false);
   const [quotationQty, setQuotationQty] = useState('1000');
@@ -224,12 +232,69 @@ export default function Products({ categoryFilter, setCategoryFilter, lang, prod
                       {lang === 'fa' ? selectedProduct.title : selectedProduct.titleEn}
                     </h3>
                   </div>
-                  <button
-                    onClick={() => setSelectedProduct(null)}
-                    className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
+
+                  <div className={`flex items-center gap-3 ${lang === 'fa' ? 'flex-row' : 'flex-row-reverse'}`}>
+                    {/* Share Group */}
+                    <div className="flex items-center gap-1 bg-white/10 p-1 rounded-xl">
+                      {/* Copy Link Button */}
+                      <button
+                        onClick={handleShareClick}
+                        className="p-1.5 rounded-lg text-white hover:bg-white/10 transition-colors cursor-pointer relative"
+                        title={lang === 'fa' ? 'کپی لینک صفحه' : 'Copy Page Link'}
+                      >
+                        {copiedSuccess ? <Check className="w-3.5 h-3.5 text-green-300" /> : <Share2 className="w-3.5 h-3.5" />}
+                        {copiedSuccess && (
+                          <span className={`absolute bottom-full mb-2 text-[9px] bg-green-600 text-white px-2 py-0.5 rounded shadow ${lang === 'fa' ? 'right-0' : 'left-0'} whitespace-nowrap z-50`}>
+                            {lang === 'fa' ? 'کپی شد' : 'Copied'}
+                          </span>
+                        )}
+                      </button>
+
+                      {/* Telegram Button */}
+                      <a
+                        href={`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(lang === 'fa' ? selectedProduct.title : selectedProduct.titleEn)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-1.5 rounded-lg text-white hover:bg-white/10 transition-colors cursor-pointer"
+                        title={lang === 'fa' ? 'اشتراک در تلگرام' : 'Share on Telegram'}
+                      >
+                        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.53-1.39.51-.46-.01-1.35-.26-2.01-.48-.81-.27-1.46-.42-1.4-.88.03-.24.37-.49 1.02-.75 3.99-1.74 6.66-2.88 7.99-3.44 3.81-1.58 4.6-1.86 5.12-1.87.11 0 .37.03.54.17.14.12.18.28.2.45-.02.07-.02.16-.03.22z"/>
+                        </svg>
+                      </a>
+
+                      {/* WhatsApp Button */}
+                      <a
+                        href={`https://api.whatsapp.com/send?text=${encodeURIComponent((lang === 'fa' ? selectedProduct.title : selectedProduct.titleEn) + ' ' + window.location.href)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-1.5 rounded-lg text-white hover:bg-white/10 transition-colors cursor-pointer"
+                        title={lang === 'fa' ? 'اشتراک در واتساپ' : 'Share on WhatsApp'}
+                      >
+                        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M19.05 4.91A11.86 11.86 0 0 0 12 2c-6.6 0-12 5.4-12 12 0 2.1.54 4.14 1.59 5.94L0 24l4.16-1.09c1.74.95 3.7 1.45 5.7 1.45h.01c6.6 0 12-5.4 12-12 0-3.2-1.24-6.21-3.52-8.5C18.35 4.9 18.35 4.9 19.05 4.91zm-7.05 17.02c-1.78 0-3.53-.48-5.05-1.38l-.36-.21-2.49.65.66-2.43-.23-.37a9.92 9.92 0 0 1-1.52-5.26c0-5.48 4.47-9.95 9.96-9.95 2.66 0 5.16 1.04 7.03 2.92a9.85 9.85 0 0 1 2.92 7.03c0 5.48-4.47 9.95-9.96 9.95zm5.46-7.46c-.3-.15-1.77-.87-2.05-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07a8.21 8.21 0 0 1-2.43-1.5 9.1 9.1 0 0 1-1.68-2.09c-.18-.3-.02-.46.13-.61.13-.13.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.07-.15-.67-1.62-.92-2.22-.24-.57-.49-.49-.67-.5-.17 0-.37-.02-.57-.02-.2 0-.52.07-.8.37-.27.3-1.05 1.02-1.05 2.5s1.07 2.9 1.22 3.1c.15.2 2.1 3.2 5.1 4.5.7.3 1.26.48 1.69.62.72.23 1.37.2 1.89.12.58-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35z"/>
+                        </svg>
+                      </a>
+
+                      {/* LinkedIn Button */}
+                      <a
+                        href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-1.5 rounded-lg text-white hover:bg-white/10 transition-colors cursor-pointer"
+                        title={lang === 'fa' ? 'اشتراک در لینکدین' : 'Share on LinkedIn'}
+                      >
+                        <Linkedin className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+
+                    <button
+                      onClick={() => setSelectedProduct(null)}
+                      className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
 
                 <div className="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 max-h-[70vh] overflow-y-auto">
