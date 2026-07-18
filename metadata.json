@@ -1,0 +1,8 @@
+{
+  "name": "ایمن تک پیشرو",
+  "description": "سایت رسمی شرکت ایمن تک پیشرو - بزرگترین تولیدکننده قطعات الکترومکانیکی و خودرویی",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
