@@ -31,16 +31,16 @@ export default function Hero({ setCurrentTab, setProductCategoryFilter, lang }: 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const getCategoryIcon = (iconName: string) => {
+  const getCategoryIcon = (iconName: string, sizeClasses = 'w-8 h-8') => {
     switch (iconName) {
       case 'ToggleRight':
-        return <ToggleRight className="w-8 h-8 text-brand-red" />;
+        return <ToggleRight className={`${sizeClasses} text-brand-red`} />;
       case 'Cpu':
-        return <Cpu className="w-8 h-8 text-brand-red" />;
+        return <Cpu className={`${sizeClasses} text-brand-red`} />;
       case 'Power':
-        return <Power className="w-8 h-8 text-brand-red" />;
+        return <Power className={`${sizeClasses} text-brand-red`} />;
       default:
-        return <Cpu className="w-8 h-8 text-brand-red" />;
+        return <Cpu className={`${sizeClasses} text-brand-red`} />;
     }
   };
 
@@ -208,7 +208,26 @@ export default function Hero({ setCurrentTab, setProductCategoryFilter, lang }: 
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Mobile view: 3 elegant columns side-by-side, no description, compact */}
+          <div className="grid grid-cols-3 gap-3 md:hidden">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => handleCategoryClick(cat.id)}
+                className="p-3.5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/50 dark:border-zinc-800/80 active:scale-95 transition-all shadow-sm flex flex-col items-center justify-center text-center gap-2 cursor-pointer"
+              >
+                <div className="w-10 h-10 rounded-xl bg-brand-red/10 dark:bg-brand-red/15 flex items-center justify-center">
+                  {getCategoryIcon(cat.icon, 'w-5 h-5')}
+                </div>
+                <span className="text-[11px] font-black text-zinc-900 dark:text-white leading-tight">
+                  {cat.title}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          {/* Desktop/Tablet view: Detailed 3 cards, original style */}
+          <div className="hidden md:grid md:grid-cols-3 gap-8">
             {categories.map((cat) => (
               <div
                 key={cat.id}
@@ -217,7 +236,7 @@ export default function Hero({ setCurrentTab, setProductCategoryFilter, lang }: 
               >
                 <div>
                   <div className={`w-14 h-14 rounded-2xl bg-brand-red/10 dark:bg-brand-red/15 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ${lang === 'fa' ? 'mr-0 ml-auto' : 'mr-auto ml-0'}`}>
-                    {getCategoryIcon(cat.icon)}
+                    {getCategoryIcon(cat.icon, 'w-8 h-8')}
                   </div>
                   <h3 className="text-xl font-bold text-zinc-950 dark:text-white mb-3">
                     {cat.title}
