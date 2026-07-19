@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PRODUCTS_DATA } from '../data';
 import { Product } from '../types';
@@ -18,6 +18,35 @@ export default function Products({ categoryFilter, setCategoryFilter, lang, prod
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   
   const [copiedSuccess, setCopiedSuccess] = useState(false);
+
+  // Deep-linking: load product from URL query param on mount/products update
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const productId = searchParams.get('product');
+    if (productId) {
+      const prod = products.find(p => p.id === productId);
+      if (prod) {
+        setSelectedProduct(prod);
+        // Scroll slightly down to make sure modal is clearly in focus or viewport is updated
+        setTimeout(() => {
+          const section = document.getElementById('products-section');
+          if (section) section.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, [products]);
+
+  // Deep-linking: sync selected product back to URL query parameters
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (selectedProduct) {
+      url.searchParams.set('product', selectedProduct.id);
+      url.searchParams.set('tab', 'products');
+    } else {
+      url.searchParams.delete('product');
+    }
+    window.history.replaceState(null, '', url.toString());
+  }, [selectedProduct]);
   
   const handleShareClick = () => {
     setCopiedSuccess(true);
