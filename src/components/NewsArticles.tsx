@@ -12,7 +12,10 @@ interface NewsArticlesProps {
 
 export default function NewsArticles({ lang, articles = ARTICLES_DATA }: NewsArticlesProps) {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    return searchParams.get('article') || '';
+  });
   const [selectedCat, setSelectedCat] = useState<string>('all');
   const [copiedSuccess, setCopiedSuccess] = useState(false);
 
@@ -24,6 +27,7 @@ export default function NewsArticles({ lang, articles = ARTICLES_DATA }: NewsArt
       const art = articles.find(a => a.id === articleId);
       if (art) {
         setSelectedArticle(art);
+        setSelectedCat('all');
         // Scroll slightly down to make sure modal is clearly in focus or viewport is updated
         setTimeout(() => {
           const section = document.getElementById('news-articles-section');
@@ -62,6 +66,7 @@ export default function NewsArticles({ lang, articles = ARTICLES_DATA }: NewsArt
       const contentText = lang === 'fa' ? a.content : a.contentEn;
 
       const matchesSearch =
+        a.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
         titleText.toLowerCase().includes(searchTerm.toLowerCase()) ||
         excerptText.toLowerCase().includes(searchTerm.toLowerCase()) ||
         contentText.toLowerCase().includes(searchTerm.toLowerCase());
