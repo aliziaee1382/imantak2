@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { PRODUCTS_DATA } from '../data';
 import { Product } from '../types';
 import { IMAGE_CONFIG } from '../imageConfig';
-import { Search, Filter, Info, ShoppingBag, X, CheckCircle, HelpCircle, FileText, ChevronLeft, ArrowRight, Share2, Check, Linkedin } from 'lucide-react';
+import { Search, Filter, Info, ShoppingBag, X, CheckCircle, HelpCircle, FileText, ChevronLeft, ArrowRight, Share2, Check, Linkedin, Phone, MapPin, Building2 } from 'lucide-react';
 import { translations } from '../translations';
 
 interface ProductsProps {
@@ -252,17 +252,36 @@ export default function Products({ categoryFilter, setCategoryFilter, lang, prod
                 className={`relative z-10 inline-block align-bottom bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full border border-zinc-200 dark:border-zinc-800 ${lang === 'fa' ? 'text-right' : 'text-left'}`}
               >
                 {/* Header block with visual identity */}
-                <div className={`bg-brand-red p-6 text-white flex justify-between items-center ${lang === 'fa' ? 'flex-row' : 'flex-row-reverse'}`}>
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-bold tracking-widest bg-white/10 px-2 py-0.5 rounded">
-                      {lang === 'fa' ? 'بخش فنی مهندسی' : 'Engineering Department'}
-                    </span>
-                    <h3 className="text-lg sm:text-xl font-extrabold">
+                <div className="bg-brand-red p-6 text-white relative">
+                  {/* Top bar: Left side has the tag, Right side has the Close button */}
+                  <div className="flex items-center justify-between mb-4 [direction:ltr]">
+                    <div>
+                      <span className="text-[11px] font-bold tracking-widest bg-white/10 px-2.5 py-1 rounded-lg">
+                        {lang === 'fa' ? 'بخش فنی مهندسی' : 'Engineering Department'}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => setSelectedProduct(null)}
+                      className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
+                      title={lang === 'fa' ? 'بستن' : 'Close'}
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  {/* Title: full width */}
+                  <div className="w-full mb-5">
+                    <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight leading-snug w-full">
                       {lang === 'fa' ? selectedProduct.title : selectedProduct.titleEn}
                     </h3>
                   </div>
 
-                  <div className={`flex items-center gap-3 ${lang === 'fa' ? 'flex-row' : 'flex-row-reverse'}`}>
+                  {/* Bottom bar: Social sharing group */}
+                  <div className={`flex flex-wrap items-center gap-3 pt-4 border-t border-white/15 ${lang === 'fa' ? 'flex-row' : 'flex-row-reverse'}`}>
+                    <span className="text-xs font-bold opacity-80">
+                      {lang === 'fa' ? 'اشتراک‌گذاری این قطعه:' : 'Share this component:'}
+                    </span>
+                    
                     {/* Share Group */}
                     <div className="flex items-center gap-1 bg-white/10 p-1 rounded-xl">
                       {/* Copy Link Button */}
@@ -316,13 +335,6 @@ export default function Products({ categoryFilter, setCategoryFilter, lang, prod
                         <Linkedin className="w-3.5 h-3.5" />
                       </a>
                     </div>
-
-                    <button
-                      onClick={() => setSelectedProduct(null)}
-                      className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
-                    >
-                      <X className="w-5 h-5" />
-                    </button>
                   </div>
                 </div>
 
@@ -379,91 +391,63 @@ export default function Products({ categoryFilter, setCategoryFilter, lang, prod
 
                   </div>
 
-                  {/* Right Column: Dynamic Price/Quotation Form */}
+                  {/* Right Column: Direct Price Inquiry & Contact Info */}
                   <div className={`lg:col-span-5 border-t lg:border-t-0 border-zinc-150 dark:border-zinc-800 pt-6 lg:pt-0 ${lang === 'fa' ? 'lg:border-r lg:pr-8' : 'lg:border-l lg:pl-8'}`}>
-                    <div className="bg-zinc-50 dark:bg-zinc-950 p-5 rounded-2xl border border-zinc-150 dark:border-zinc-800/50">
+                    <div className="bg-zinc-50 dark:bg-zinc-950 p-6 rounded-2xl border border-zinc-150 dark:border-zinc-800/50 space-y-6">
                       
-                      {!isQuotationSent ? (
-                        <form onSubmit={handleQuotationSubmit} className="space-y-4">
-                          <h4 className="text-sm font-black text-zinc-900 dark:text-white flex items-center gap-2 mb-2 justify-start">
-                            <ShoppingBag className="w-4 h-4 text-brand-red" />
-                            <span>{t.productsModalFormTitle}</span>
-                          </h4>
-                          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed mb-4">
-                            {lang === 'fa' ? 'جهت دریافت آخرین کاتالوگ فنی، قیمت و شرایط همکاری سازندگان، مشخصات خود را وارد فرمایید تا کارشناسان فروش با شما تماس بگیرند.' : 'Please enter your business contact information below to receive official quotes, drawings, and corporate OEM prices.'}
-                          </p>
+                      <div className="text-center space-y-4">
+                        <div className="w-12 h-12 rounded-full bg-brand-red/10 flex items-center justify-center text-brand-red mx-auto">
+                          <Phone className="w-6 h-6 animate-pulse" />
+                        </div>
+                        
+                        <h4 className="text-base font-black text-zinc-900 dark:text-white">
+                          {lang === 'fa' ? 'استعلام قیمت و سفارش قطعه' : 'Price Inquiry & Ordering'}
+                        </h4>
+                        
+                        <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium">
+                          {lang === 'fa' 
+                            ? 'جهت استعلام قیمت و سفارش با شماره تماس‌ زیر ارتباط برقرار کنید:' 
+                            : 'To inquire about prices or place an order, please contact our wholesale outlet:'}
+                        </p>
+                      </div>
 
-                          <div>
-                            <label className="block text-[11px] font-bold text-zinc-600 dark:text-zinc-400 mb-1">{t.productsModalFormQty}</label>
-                            <select
-                              value={quotationQty}
-                              onChange={(e) => setQuotationQty(e.target.value)}
-                              className="w-full text-xs p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-brand-red"
-                            >
-                              <option value="1000">{lang === 'fa' ? '۱,۰۰۰ الی ۵,۰۰۰ عدد' : '1,000 to 5,000 Units'}</option>
-                              <option value="5000">{lang === 'fa' ? '۵,۰۰۰ الی ۲۰,۰۰۰ عدد' : '5,000 to 20,000 Units'}</option>
-                              <option value="20000">{lang === 'fa' ? 'بیش از ۲۰,۰۰۰ عدد (تولید انبوه)' : 'Over 20,000 Units (Mass Production)'}</option>
-                            </select>
-                          </div>
+                      {/* Clickable Phone Number */}
+                      <div className="space-y-3">
+                        <a 
+                          href="tel:02133118674"
+                          className="flex flex-col items-center justify-center p-4 bg-brand-red hover:bg-brand-red-hover text-white rounded-2xl transition-all shadow-md shadow-brand-red/10 group cursor-pointer"
+                        >
+                          <span className="text-[10px] uppercase tracking-widest font-bold opacity-80 mb-1">
+                            {lang === 'fa' ? 'تلفن مستقیم فروشگاه' : 'Direct Shop Line'}
+                          </span>
+                          <span className="text-xl font-extrabold font-mono tracking-wider group-hover:scale-105 transition-transform">
+                            {lang === 'fa' ? '۰۲۱-۳۳۱۱۸۶۷۴' : '021-33118674'}
+                          </span>
+                        </a>
 
-                          <div>
-                            <label className="block text-[11px] font-bold text-zinc-600 dark:text-zinc-400 mb-1">{t.productsModalFormName} *</label>
-                            <input
-                              type="text"
-                              required
-                              value={clientName}
-                              onChange={(e) => setClientName(e.target.value)}
-                              placeholder={lang === 'fa' ? 'مثال: علی احمدی' : 'e.g. John Doe'}
-                              className={`w-full text-xs p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-brand-red ${lang === 'fa' ? 'text-right' : 'text-left'}`}
-                            />
-                          </div>
+                        {/* Extra Call-to-action details */}
+                        <div className="text-center text-[10px] text-zinc-400 dark:text-zinc-500 font-bold">
+                          {lang === 'fa' ? 'ساعات پاسخگویی: ۹ صبح الی ۶ عصر' : 'Business Hours: 9:00 AM - 6:00 PM'}
+                        </div>
+                      </div>
 
-                          <div>
-                            <label className="block text-[11px] font-bold text-zinc-600 dark:text-zinc-400 mb-1">{t.productsModalFormCompany}</label>
-                            <input
-                              type="text"
-                              value={clientCompany}
-                              onChange={(e) => setClientCompany(e.target.value)}
-                              placeholder={lang === 'fa' ? 'مثال: قطعه سازان غرب' : 'e.g. West Auto Parts Co'}
-                              className={`w-full text-xs p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-brand-red ${lang === 'fa' ? 'text-right' : 'text-left'}`}
-                            />
-                          </div>
+                      {/* Small line divider */}
+                      <div className="border-t border-zinc-200 dark:border-zinc-800 my-4" />
 
-                          <div>
-                            <label className="block text-[11px] font-bold text-zinc-600 dark:text-zinc-400 mb-1">{t.productsModalFormPhone} *</label>
-                            <input
-                              type="tel"
-                              required
-                              value={clientPhone}
-                              onChange={(e) => setClientPhone(e.target.value)}
-                              placeholder={lang === 'fa' ? 'مثال: 09123456789' : 'e.g. +989123456789'}
-                              className="w-full text-xs p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-brand-red text-left"
-                            />
-                          </div>
-
-                          <button
-                            type="submit"
-                            className="w-full py-3 bg-brand-red hover:bg-brand-red-hover text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-brand-red/10 cursor-pointer text-center"
-                          >
-                            {t.productsModalFormSubmit}
-                          </button>
-                        </form>
-                      ) : (
-                        <div className="text-center py-10 space-y-4">
-                          <CheckCircle className="w-12 h-12 text-green-500 mx-auto" />
-                          <h5 className="text-sm font-bold text-zinc-900 dark:text-white">{lang === 'fa' ? 'درخواست شما با موفقیت ثبت شد' : 'Inquiry Submitted Successfully'}</h5>
-                          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                            {lang === 'fa' ? 'شماره پیگیری:' : 'Tracking Number:'} <span className="font-mono text-xs font-bold text-brand-red">IM-{Math.floor(Math.random() * 90000) + 10000}</span>
-                          </p>
-                          <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
-                            {lang === 'fa' ? (
-                              <>کارشناسان واحد فروش شرکت ایمن تک پیشرو طی ۲۴ ساعت آینده جهت ارسال پیش‌فاکتور و کاتالوگ جامع قطعه <span className="font-bold">{selectedProduct.model}</span> با شما تماس خواهند گرفت.</>
-                            ) : (
-                              <>Our OEM sales coordinators will reach out to you within 24 hours with custom pricing and technical drawings for module <span className="font-bold">{selectedProduct.model}</span>.</>
-                            )}
+                      {/* Small Shop Address below it */}
+                      <div className={`flex gap-2.5 items-start ${lang === 'fa' ? 'text-right' : 'text-left'}`}>
+                        <MapPin className="w-4 h-4 text-brand-red shrink-0 mt-0.5" />
+                        <div className="space-y-1">
+                          <span className="text-[10px] font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block">
+                            {lang === 'fa' ? 'آدرس فروشگاه قطعات یدکی' : 'Spare Parts Outlet'}
+                          </span>
+                          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed font-medium">
+                            {lang === 'fa' 
+                              ? 'تهران، خیابان امیرکبیر، مجتمع تجاری قطعات خودرو (بازار ملت)' 
+                              : 'Mellat Auto Parts Market, Amir Kabir St, Tehran, Iran'}
                           </p>
                         </div>
-                      )}
+                      </div>
 
                     </div>
                   </div>
