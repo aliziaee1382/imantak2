@@ -123,7 +123,7 @@ export default function Hero({ setCurrentTab, setProductCategoryFilter, lang }: 
                       initial={{ scale: 0.95, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ duration: 0.8 }}
-                      className="relative h-[320px] lg:h-[380px] rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800 shadow-2xl overflow-hidden group"
+                      className="relative w-full aspect-[1024/570] rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800 shadow-2xl overflow-hidden group"
                     >
                       <img 
                         src={slideImages[index]} 
