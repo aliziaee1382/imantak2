@@ -103,8 +103,8 @@ export default function App() {
 
   const t = translations[lang];
 
-  // Filter out Rera keys for Home "جدیدترین ها" showcase
-  const reraHighlights = products.filter(p => p.id.startsWith('AB32'));
+  // Filter newest products for Home "جدیدترین ها" showcase (showing 4 latest products)
+  const homeNewestProducts = products.slice(0, 4);
 
   const renderTabContent = () => {
     switch (currentTab) {
@@ -134,7 +134,7 @@ export default function App() {
                   </div>
                   <button
                     onClick={() => {
-                      setProductCategoryFilter('keys');
+                      setProductCategoryFilter('all');
                       setCurrentTab('products');
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
@@ -145,26 +145,26 @@ export default function App() {
                   </button>
                 </div>
 
-                {/* Bento Grid layout for Rera products */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {reraHighlights.slice(0, 3).map((product) => (
+                {/* Grid layout for newest products (2-by-2 on mobile, 4 on desktop) */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
+                  {homeNewestProducts.slice(0, 4).map((product) => (
                     <div
                       key={product.id}
-                      className="bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-150 dark:border-zinc-800/60 rounded-2xl p-6 hover:shadow-lg transition-all duration-300 flex flex-col justify-between group"
+                      className="bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-150 dark:border-zinc-800/60 rounded-2xl p-4 sm:p-6 hover:shadow-lg transition-all duration-300 flex flex-col justify-between group"
                     >
                       <div>
                         {/* Header metadata */}
-                        <div className={`flex justify-between items-center mb-4 ${lang === 'fa' ? 'flex-row' : 'flex-row-reverse'}`}>
-                          <span className="text-[10px] font-bold text-brand-red bg-brand-red/5 px-2.5 py-1 rounded">
+                        <div className={`flex justify-between items-center mb-3 ${lang === 'fa' ? 'flex-row' : 'flex-row-reverse'}`}>
+                          <span className="text-[9px] sm:text-[10px] font-bold text-brand-red bg-brand-red/5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded">
                             {lang === 'fa' ? product.categoryFa : product.categoryEn}
                           </span>
-                          <span className="text-[10px] font-mono text-zinc-400 font-bold">
+                          <span className="text-[9px] sm:text-[10px] font-mono text-zinc-400 font-bold">
                             {product.model}
                           </span>
                         </div>
 
                         {/* Visual mockup slot */}
-                        <div className="w-full h-44 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-150 dark:border-zinc-900/50 flex items-center justify-center mb-4 relative overflow-hidden">
+                        <div className="w-full h-28 sm:h-44 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-150 dark:border-zinc-900/50 flex items-center justify-center mb-4 relative overflow-hidden">
                           <img 
                             src={product.image} 
                             alt={lang === 'fa' ? product.title : product.titleEn}
@@ -174,27 +174,42 @@ export default function App() {
                         </div>
 
                         {/* Info */}
-                        <h3 className={`text-base font-extrabold text-zinc-900 dark:text-zinc-100 group-hover:text-brand-red transition-colors mb-2 ${lang === 'fa' ? 'text-right' : 'text-left'}`}>
+                        <h3 className={`text-xs sm:text-base font-extrabold text-zinc-900 dark:text-zinc-100 group-hover:text-brand-red transition-colors mb-2 line-clamp-1 ${lang === 'fa' ? 'text-right' : 'text-left'}`}>
                           {lang === 'fa' ? product.title : product.titleEn}
                         </h3>
-                        <p className={`text-zinc-500 dark:text-zinc-400 text-xs line-clamp-3 leading-relaxed mb-4 ${lang === 'fa' ? 'text-right' : 'text-left'}`}>
+                        <p className={`text-zinc-500 dark:text-zinc-400 text-[10px] sm:text-xs line-clamp-2 leading-relaxed mb-4 ${lang === 'fa' ? 'text-right' : 'text-left'}`}>
                           {lang === 'fa' ? product.description : product.descriptionEn}
                         </p>
                       </div>
 
                       <button
                         onClick={() => {
-                          setProductCategoryFilter('keys');
+                          setProductCategoryFilter('all');
                           setCurrentTab('products');
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className={`w-full py-2.5 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-800 group-hover:border-brand-red dark:group-hover:border-brand-red group-hover:bg-brand-red group-hover:text-white rounded-xl text-xs font-bold transition-all duration-300 flex items-center justify-center gap-1 cursor-pointer ${lang === 'fa' ? 'flex-row' : 'flex-row-reverse'}`}
+                        className={`w-full py-2 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-800 group-hover:border-brand-red dark:group-hover:border-brand-red group-hover:bg-brand-red group-hover:text-white rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-bold transition-all duration-300 flex items-center justify-center gap-1 cursor-pointer ${lang === 'fa' ? 'flex-row' : 'flex-row-reverse'}`}
                       >
                         <span>{t.homeCatalogRequest}</span>
-                        {lang === 'fa' ? <ChevronLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+                        {lang === 'fa' ? <ChevronLeft className="w-3.5 h-3.5" /> : <ArrowRight className="w-3.5 h-3.5" />}
                       </button>
                     </div>
                   ))}
+                </div>
+
+                {/* Centered view other products button */}
+                <div className="flex justify-center mt-12">
+                  <button
+                    onClick={() => {
+                      setProductCategoryFilter('all');
+                      setCurrentTab('products');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className={`px-8 py-3.5 bg-brand-red hover:bg-brand-red-hover text-white rounded-xl text-xs sm:text-sm font-bold shadow-lg shadow-brand-red/10 transition-all duration-300 flex items-center gap-2 cursor-pointer ${lang === 'fa' ? 'flex-row' : 'flex-row-reverse'}`}
+                  >
+                    <span>{t.homeBentoBtn}</span>
+                    {lang === 'fa' ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+                  </button>
                 </div>
 
               </div>
