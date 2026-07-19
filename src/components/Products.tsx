@@ -14,7 +14,10 @@ interface ProductsProps {
 }
 
 export default function Products({ categoryFilter, setCategoryFilter, lang, products = PRODUCTS_DATA }: ProductsProps) {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    return searchParams.get('product') || '';
+  });
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   
   const [copiedSuccess, setCopiedSuccess] = useState(false);
@@ -27,14 +30,15 @@ export default function Products({ categoryFilter, setCategoryFilter, lang, prod
       const prod = products.find(p => p.id === productId);
       if (prod) {
         setSelectedProduct(prod);
+        setCategoryFilter('all');
         // Scroll slightly down to make sure modal is clearly in focus or viewport is updated
         setTimeout(() => {
-          const section = document.getElementById('products-section');
+          const section = document.getElementById('products-catalog-section');
           if (section) section.scrollIntoView({ behavior: 'smooth' });
         }, 100);
       }
     }
-  }, [products]);
+  }, [products, setCategoryFilter]);
 
   // Deep-linking: sync selected product back to URL query parameters
   useEffect(() => {
@@ -71,6 +75,7 @@ export default function Products({ categoryFilter, setCategoryFilter, lang, prod
       const catText = lang === 'fa' ? product.categoryFa : product.categoryEn;
 
       const matchesSearch =
+        product.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
         titleText.toLowerCase().includes(searchTerm.toLowerCase()) ||
         product.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
         descText.toLowerCase().includes(searchTerm.toLowerCase()) ||
