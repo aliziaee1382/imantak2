@@ -15,8 +15,8 @@ export const translations = {
     
     // Home - Bento Section
     homeBentoBadge: 'آخرین دستاوردهای مهندسی',
-    homeBentoTitle: 'جدیدترین کلیدهای خودرویی ریرا',
-    homeBentoBtn: 'مشاهده تمام کلیدها',
+    homeBentoTitle: 'جدیدترین محصولات',
+    homeBentoBtn: 'مشاهده سایر محصولات',
     homeCatalogRequest: 'کاتالوگ و استعلام قیمت',
     homeSpecialRera: 'ویژه ریرا',
 
@@ -179,8 +179,8 @@ export const translations = {
 
     // Home - Bento Section
     homeBentoBadge: 'Latest Engineering Achievements',
-    homeBentoTitle: 'Newest Automotive Switches of Reera',
-    homeBentoBtn: 'View All Switches',
+    homeBentoTitle: 'Newest Products',
+    homeBentoBtn: 'View Other Products',
     homeCatalogRequest: 'Catalog & Inquiry',
     homeSpecialRera: 'Special for Reera',
 
