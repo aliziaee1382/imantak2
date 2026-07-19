@@ -46,6 +46,12 @@ export default function Hero({ setCurrentTab, setProductCategoryFilter, lang }: 
 
   const t = translations[lang];
 
+  const slideImages = [
+    'https://chat0003.ir/picture/wmremove-transformed.jpeg',
+    'https://chat0003.ir/picture/wmremove-transformed1.jpeg',
+    'https://chat0003.ir/picture/wmremove-transformed2.jpeg'
+  ];
+
   return (
     <section id="hero-section" className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 overflow-hidden bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300">
       
@@ -111,55 +117,23 @@ export default function Hero({ setCurrentTab, setProductCategoryFilter, lang }: 
                     </div>
                   </div>
 
-                  {/* Graphics / Tech-Display Representation */}
+                  {/* Graphics / Tech-Display Representation with User Images */}
                   <div className="lg:col-span-5 hidden lg:block">
                     <motion.div
-                      initial={{ scale: 0.9, rotate: -2 }}
-                      animate={{ scale: 1, rotate: 0 }}
+                      initial={{ scale: 0.95, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
                       transition={{ duration: 0.8 }}
-                      className="relative p-8 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800 shadow-2xl overflow-hidden group"
+                      className="relative h-[320px] lg:h-[380px] rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800 shadow-2xl overflow-hidden group"
                     >
-                      <div className="absolute top-0 left-0 w-2 h-full bg-brand-red" />
+                      <img 
+                        src={slideImages[index]} 
+                        alt={slide.title}
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                      />
                       
-                      {/* Grid overlay */}
-                      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
-
-                      <div className="relative space-y-6">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-mono text-zinc-400 dark:text-zinc-500">IMANTAK R&D // SYSTEM_ACTIVE</span>
-                          <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse" />
-                        </div>
-
-                        <div className={`border border-zinc-100 dark:border-zinc-800 rounded-2xl p-5 bg-zinc-50 dark:bg-zinc-950 ${lang === 'fa' ? 'text-right' : 'text-left'}`}>
-                          <span className="text-xs font-semibold text-brand-red block mb-1">{lang === 'fa' ? 'درحال تولید انبوه' : 'In Mass Production'}</span>
-                          <h3 className="text-base font-bold text-zinc-800 dark:text-zinc-100">{lang === 'fa' ? 'کلید ترمز پارک برقی و اتوهلد ریرا AB327' : 'Reera EPB & Auto-Hold Console Switch AB327'}</h3>
-                          <div className={`mt-4 flex gap-2 ${lang === 'fa' ? 'flex-row' : 'flex-row'}`}>
-                            <span className="px-2 py-1 rounded bg-zinc-200 dark:bg-zinc-800 text-[10px] text-zinc-600 dark:text-zinc-400 font-mono">{lang === 'fa' ? '۱۰۰٪ کالیبره' : '100% Calibrated'}</span>
-                            <span className="px-2 py-1 rounded bg-zinc-200 dark:bg-zinc-800 text-[10px] text-zinc-600 dark:text-zinc-400 font-mono">{lang === 'fa' ? 'اثر هال' : 'Hall Effect'}</span>
-                          </div>
-                        </div>
-
-                        <div className="space-y-2">
-                          <div className={`flex justify-between text-xs font-bold text-zinc-600 dark:text-zinc-400 ${lang === 'fa' ? 'flex-row' : 'flex-row-reverse'}`}>
-                            <span>{lang === 'fa' ? 'دقت بومی‌سازی قطعات های‌تک' : 'Localization Accuracy of High-Tech Parts'}</span>
-                            <span className="text-brand-red">98.5%</span>
-                          </div>
-                          <div className="w-full h-1.5 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
-                            <div className="w-[98.5%] h-full bg-brand-red rounded-full" />
-                          </div>
-                        </div>
-
-                        <div className={`flex items-center justify-between text-xs text-zinc-500 ${lang === 'fa' ? 'flex-row' : 'flex-row-reverse'}`}>
-                          <div className="flex items-center gap-1">
-                            <Shield className="w-3.5 h-3.5 text-brand-red" />
-                            <span>{lang === 'fa' ? '۴ دهه استاندارد کیفی' : '4 Decades of Quality Standard'}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Calendar className="w-3.5 h-3.5 text-brand-red" />
-                            <span>{lang === 'fa' ? 'تولد: ۱۳۶۳' : 'Est: 1984'}</span>
-                          </div>
-                        </div>
-                      </div>
+                      {/* Subtitle/Overlay vignette */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
                     </motion.div>
                   </div>
                 </motion.div>
