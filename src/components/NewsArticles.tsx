@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ARTICLES_DATA } from '../data';
 import { Article } from '../types';
@@ -15,6 +15,35 @@ export default function NewsArticles({ lang, articles = ARTICLES_DATA }: NewsArt
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCat, setSelectedCat] = useState<string>('all');
   const [copiedSuccess, setCopiedSuccess] = useState(false);
+
+  // Deep-linking: load article from URL query param on mount/articles update
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const articleId = searchParams.get('article');
+    if (articleId) {
+      const art = articles.find(a => a.id === articleId);
+      if (art) {
+        setSelectedArticle(art);
+        // Scroll slightly down to make sure modal is clearly in focus or viewport is updated
+        setTimeout(() => {
+          const section = document.getElementById('news-articles-section');
+          if (section) section.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, [articles]);
+
+  // Deep-linking: sync selected article back to URL query parameters
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (selectedArticle) {
+      url.searchParams.set('article', selectedArticle.id);
+      url.searchParams.set('tab', 'articles');
+    } else {
+      url.searchParams.delete('article');
+    }
+    window.history.replaceState(null, '', url.toString());
+  }, [selectedArticle]);
 
   const t = translations[lang];
 
