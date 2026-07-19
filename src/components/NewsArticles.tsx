@@ -92,37 +92,48 @@ export default function NewsArticles({ lang, articles = ARTICLES_DATA }: NewsArt
         </div>
 
         {/* Filter & Search Bar */}
-        <div className={`bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-850 p-6 rounded-2xl mb-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6 ${lang === 'fa' ? 'flex-row' : 'flex-row-reverse'}`}>
+        <div className="bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-150 dark:border-zinc-800 p-6 rounded-2xl mb-12 flex flex-col gap-6">
           
-          {/* Category Filters */}
-          <div className="flex flex-wrap gap-2">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCat(cat)}
-                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer ${
-                  selectedCat === cat
-                    ? 'bg-brand-red text-white'
-                    : 'bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100'
-                }`}
-              >
-                {cat === 'all' ? (lang === 'fa' ? 'همه موضوعات' : 'All Topics') : cat}
-              </button>
-            ))}
+          {/* Article Search - Centered and full-width */}
+          <div className="w-full flex justify-center">
+            <div className="relative w-full max-w-xl">
+              <span className={`absolute inset-y-0 flex items-center text-zinc-400 ${lang === 'fa' ? 'right-4 pr-1' : 'left-4 pl-1'}`}>
+                <Search className="w-4 h-4" />
+              </span>
+              <input
+                type="text"
+                placeholder={t.newsSearchPlaceholder}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full py-2.5 rounded-xl text-xs sm:text-sm bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white border border-zinc-200 dark:border-zinc-800 focus:outline-none focus:ring-1 focus:ring-brand-red focus:border-transparent transition-all text-center pr-10 pl-10"
+              />
+            </div>
           </div>
 
-          {/* Article Search */}
-          <div className="relative max-w-xs w-full">
-            <span className={`absolute inset-y-0 flex items-center text-zinc-400 ${lang === 'fa' ? 'right-3 pr-2' : 'left-3 pl-2'}`}>
-              <Search className="w-4 h-4" />
-            </span>
-            <input
-              type="text"
-              placeholder={t.newsSearchPlaceholder}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className={`w-full py-2 rounded-xl text-xs bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white border border-zinc-200 dark:border-zinc-800 focus:outline-none focus:ring-1 focus:ring-brand-red focus:border-transparent transition-all ${lang === 'fa' ? 'pr-9 pl-3 text-right' : 'pl-9 pr-3 text-left'}`}
-            />
+          {/* Small line divider */}
+          <div className="w-full border-t border-zinc-200/60 dark:border-zinc-800/80 my-1" />
+
+          {/* Category Filters with small title */}
+          <div className="space-y-3">
+            <h4 className={`text-xs font-black text-zinc-400 dark:text-zinc-500 text-center ${lang === 'fa' ? 'md:text-right' : 'md:text-left'}`}>
+              {lang === 'fa' ? 'دسته بندی مطالب:' : 'Topics:'}
+            </h4>
+            
+            <div className={`flex flex-wrap justify-center ${lang === 'fa' ? 'md:justify-start' : 'md:justify-end'} gap-2`}>
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCat(cat)}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer ${
+                    selectedCat === cat
+                      ? 'bg-brand-red text-white'
+                      : 'bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100'
+                  }`}
+                >
+                  {cat === 'all' ? (lang === 'fa' ? 'همه موضوعات' : 'All Topics') : cat}
+                </button>
+              ))}
+            </div>
           </div>
 
         </div>
