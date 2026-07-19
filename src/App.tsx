@@ -66,6 +66,37 @@ export default function App() {
     }
   }, [lang]);
 
+  // Synchronize Tab and Selection to URL on initial mount
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const productId = searchParams.get('product');
+    const articleId = searchParams.get('article');
+    const tabParam = searchParams.get('tab') as AppTab | null;
+
+    if (productId) {
+      setCurrentTab('products');
+    } else if (articleId) {
+      setCurrentTab('articles');
+    } else if (tabParam) {
+      setCurrentTab(tabParam);
+    }
+  }, []);
+
+  // Sync current tab to URL query parameters
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('tab', currentTab);
+    
+    // Clean up query parameters of other tabs to keep the URL elegant
+    if (currentTab !== 'products') {
+      url.searchParams.delete('product');
+    }
+    if (currentTab !== 'articles') {
+      url.searchParams.delete('article');
+    }
+    window.history.replaceState(null, '', url.toString());
+  }, [currentTab]);
+
   const toggleDarkMode = () => {
     setIsDarkMode(prev => !prev);
   };
